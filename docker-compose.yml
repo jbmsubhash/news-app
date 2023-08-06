@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  php:
+      build:
+        context: .
+      container_name: news-app
+      volumes:
+        - .:/var/www/html
+      ports:
+        - "8000:9000"
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-15}-alpine
