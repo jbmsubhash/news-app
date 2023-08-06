@@ -11,8 +11,9 @@ class Guardian implements NewsProviderInterface
 {
 
     public function __construct(
-        private readonly string                $baseUrl,
-        private readonly HttpClient            $httpClientService,
+        private readonly string $baseUrl,
+        private readonly string $apiKey,
+        private readonly HttpClient $httpClientService,
         private readonly NewsResponseValidator $newsResponseValidator
     ) {
     }
@@ -24,7 +25,7 @@ class Guardian implements NewsProviderInterface
     public function fetchNews(?string $search): ?array
     {
         $params = [
-            'api-key' => 'abdb0d0f-f667-44c7-8c5a-bd6a2be00f3a',
+            'api-key' => $this->apiKey,
             'q' => $search,
         ];
 

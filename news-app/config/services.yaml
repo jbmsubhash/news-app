@@ -26,7 +26,8 @@ services:
     App\Provider\NewsProvider\Guardian:
         tags: ['news_provider']
         arguments:
-            - 'https://content.guardianapis.com'
+            - '%env(GUARDIAN_BASE_URL)%'
+            - '%env(GUARDIAN_API_KEY)%'
 
     App\Manager\NewsManager:
         arguments:
