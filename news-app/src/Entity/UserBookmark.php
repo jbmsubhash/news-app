@@ -27,7 +27,7 @@ class UserBookmark
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?User
     {
         return $this->user;
     }
@@ -39,7 +39,7 @@ class UserBookmark
         return $this;
     }
 
-    public function getNews(): ?int
+    public function getNews(): ?News
     {
         return $this->news;
     }

@@ -3,7 +3,9 @@ namespace App\Service;
 
 use App\Entity\News;
 use App\Entity\UserBookmark;
+use App\Model\BookmarkListRequest;
 use App\Model\BookmarkRequest;
+use App\Model\NewsResponse;
 use App\Repository\UserBookmarkRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +20,7 @@ class BookmarkService
         private readonly ValidatorInterface $validator,
         private readonly UserBookmarkRepository $userBookmarkRepository,
         private readonly UserRepository $userRepository,
+        private readonly NewsService $newsService,
         protected EntityManagerInterface $entityManager,
         private readonly LoggerInterface $logger)
     {
@@ -42,6 +45,22 @@ class BookmarkService
         }
         return $bookmarkRequest;
     }
+    /**
+     * @throws Exception
+     */
+    public function validateListRequest(Request $request): BookmarkListRequest
+    {
+        $bookmarkListRequest = new BookmarkListRequest();
+        $bookmarkListRequest->userId = $request->query->get('userId');
+
+        $errors = $this->validator->validate($bookmarkListRequest);
+
+        if (count($errors) > 0) {
+            throw new Exception("Invalid request");
+        }
+        return $bookmarkListRequest;
+    }
+
 
     public function save(BookmarkRequest $bookmarkRequest, News $news): ?UserBookmark
     {
@@ -68,5 +87,34 @@ class BookmarkService
             $this->entityManager->flush();
         }
         return $userBookmark;
+    }
+
+    public function list(BookmarkListRequest $bookmarkListRequest): ?NewsResponse
+    {
+        $user = $this->userRepository->findOneBy([
+            'id' => $bookmarkListRequest->getUserId(),
+        ]);
+
+        if(!$user) {
+            $this->logger->error("User does not exist in the database");
+            return null;
+        }
+
+        $userBookmarks = $this->userBookmarkRepository->findBy([
+            'user' => $user,
+        ]);
+        if(!$userBookmarks){
+            return null;
+        }
+        $allNews = [];
+        $news = [];
+        foreach ($userBookmarks as $userBookmark){
+            $news['id'] = $userBookmark->getNews()->getId();
+            $news['webPublicationDate'] = $userBookmark->getNews()->getWebPublicationDate()->format('Y-m-d H:i:s');
+            $news['webTitle'] = $userBookmark->getNews()->getWebTitle();
+            $news['webUrl'] = $userBookmark->getNews()->getWebUrl();
+            $allNews['news'][] = $news;
+        }
+        return $this->newsService->prepareResponsePayload($allNews);
     }
 }
