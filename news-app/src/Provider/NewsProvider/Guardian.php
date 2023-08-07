@@ -11,6 +11,7 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 
 class Guardian implements NewsProviderInterface
 {
+    const GUARDIAN_PROVIDER = 'Guardian';
 
     public function __construct(
         private readonly string $baseUrl,
@@ -42,6 +43,7 @@ class Guardian implements NewsProviderInterface
     {
         if (isset($responseArray['response']['results'])) {
             $modifiedArray = [
+                'provider' => self::GUARDIAN_PROVIDER,
                 'news' => $responseArray['response']['results']
             ];
             $deserializedObject = $this->serializer->deserialize(json_encode($modifiedArray), GuardianModel::class, 'json');

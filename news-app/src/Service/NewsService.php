@@ -23,18 +23,16 @@ class NewsService
         $this->newsProviders = $newsProviders;
     }
 
-    public function fetchAllNews(?string $search): NewsResponse
+    public function fetchAllNews(?string $search): array
     {
-        $allNews = [];
-
+        $groupedNewsArray = [];
         foreach ($this->newsProviders as $newsProvider) {
             $news = $newsProvider->fetchNews($search);
             if ($news) {
-                $allNews = array_merge($allNews, $news);
+                $groupedNewsArray['newsGroups'][] = $news;
             }
         }
-
-        return $this->newsResponseGenerator->prepareNewsResponse($allNews);
+        return $groupedNewsArray;
     }
 
     /**
