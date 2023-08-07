@@ -17,7 +17,7 @@ class NewsController extends AbstractController
     ) {
     }
 
-    #[Route('/news', name: 'news', methods: ['GET'])]
+    #[Route('/api/news', name: 'news', methods: ['GET'])]
     public function index(Request $request): Response
     {
         $search = $request->query->get('p');

@@ -6,27 +6,10 @@ use App\Model\News;
 
 class NewsResponse
 {
-    public int $count;
+    public int $provider;
     /**
      * @var News[]
      */
     public array $news;
 
-    /**
-     * @param int $count
-     * @return int
-     */
-    public function setCount(int $count): int
-    {
-        return $this->count = $count;
-    }
-
-    /**
-     * @param array $news
-     * @return array
-     */
-    public function setNews(array $news): array
-    {
-        return $this->news = $news;
-    }
 }
