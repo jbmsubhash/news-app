@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Nested;
+namespace App\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

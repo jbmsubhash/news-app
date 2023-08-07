@@ -22,19 +22,14 @@ class NewsController extends AbstractController
 
         $allNews = $newsManager->fetchAllNews($search??null);
 
-        $responseArray = [
-            'count' => count($allNews),
-            'news' => $allNews
-        ];
-
-        return new JsonResponse($newsResponseValidator->validate($responseArray));
+        return new JsonResponse($allNews);
 
     }
 
     #[Route('/bookmark', name: 'bookmark')]
     public function bookmark(Request $request): Response
     {
-        echo "TODO";
+        print_r($request->query->all());die();
 ////        if (!$this->getUser()) {
 ////            return $this->redirectToRoute('app_login');
 ////        }
