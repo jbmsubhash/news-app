@@ -5,10 +5,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class BookmarkListRequest
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type("string")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     public string $userId;
 
     /**

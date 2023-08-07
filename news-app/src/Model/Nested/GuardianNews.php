@@ -5,27 +5,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class GuardianNews
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type("string")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     public string $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type("string")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     public string $webPublicationDate;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type("string")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     public string $webTitle;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type("string")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     public string $webUrl;
 }

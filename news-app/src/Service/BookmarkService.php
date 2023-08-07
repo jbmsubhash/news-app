@@ -98,11 +98,10 @@ class BookmarkService
         if(!$userBookmarks){
             return null;
         }
-
         $allNews = [];
         $news = [];
         foreach ($userBookmarks as $userBookmark){
-            $news['id'] = $userBookmark->getNews()->getId();
+            $news['id'] = $userBookmark->getNews()->getNewsId();
             $news['webPublicationDate'] = $userBookmark->getNews()->getWebPublicationDate()->format('Y-m-d H:i:s');
             $news['webTitle'] = $userBookmark->getNews()->getWebTitle();
             $news['webUrl'] = $userBookmark->getNews()->getWebUrl();

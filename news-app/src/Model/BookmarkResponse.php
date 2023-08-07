@@ -29,4 +29,12 @@ class BookmarkResponse
     {
         return $this->news = $news;
     }
+
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->count;
+    }
 }

@@ -7,11 +7,11 @@ use App\Model\BookmarkResponse;
 
 class ResponseGenerator {
 
-    public function prepareBookmarkResponse(array $allNews): BookmarkResponse
+    public function prepareBookmarkResponse(array $news): BookmarkResponse
     {
         $newsResponse = new BookmarkResponse();
-        $newsResponse->setNews($allNews['news']);
-        $newsResponse->setCount(count($allNews['news']));
+        $newsResponse->setNews($news['news']);
+        $newsResponse->setCount(count($news['news']));
         return $newsResponse;
     }
 
