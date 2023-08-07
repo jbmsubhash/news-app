@@ -6,7 +6,6 @@ use App\Model\News;
 
 class NewsResponse
 {
-    public int $provider;
     /**
      * @var News[]
      */
