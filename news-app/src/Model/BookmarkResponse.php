@@ -13,6 +13,14 @@ class BookmarkResponse
     public array $news;
 
     /**
+     * @return array
+     */
+    public function getNews(): array
+    {
+        return $this->news;
+    }
+
+    /**
      * @param int $count
      * @return int
      */

@@ -27,7 +27,7 @@ class BookmarkServiceTestPhpTest extends TestCase
         $this->validator = Validation::createValidatorBuilder()->enableAnnotationMapping()->getValidator();
         $this->userBookmarkRepository = $this->createMock(UserBookmarkRepository::class);
         $this->userRepository = $this->createMock(UserRepository::class);
-        $this->responseGenerator = $this->createMock(ResponseGenerator::class);
+        $this->responseGenerator = new ResponseGenerator();
         $this->userService = $this->createMock(UserService::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->mockLogger = $this->createMock(LoggerInterface::class);
@@ -122,7 +122,10 @@ class BookmarkServiceTestPhpTest extends TestCase
         $request->setUserId('1');
         $result = $this->bookmarkService->list($request);
 
-        $this->assertEquals(0, $result->getCount());
+        $this->assertEquals(1, $result->getCount());
+        $this->assertEquals(1, $result->getNews()[0]['id']);
+        $this->assertEquals('testing', $result->getNews()[0]['webTitle']);
+        $this->assertEquals('www.testing.com', $result->getNews()[0]['webUrl']);
     }
 
 }
