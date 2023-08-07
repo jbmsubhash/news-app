@@ -1,21 +1,15 @@
 <?php
 namespace App\Generator;
 
-use App\Model\NewsGroupResponse;
 use App\Model\NewsResponse;
 
 class NewsResponseGenerator {
 
-    public function prepareNewsResponse($allNews): NewsGroupResponse
+    public function prepareNewsResponse($allNews): NewsResponse
     {
         $newsResponse = new NewsResponse();
         $newsResponse->setNews($allNews['news']);
-        $newsResponse->setProvider($allNews['news']);
-
-        $newsResponse = new NewsGroupResponse();
-
-        $newsResponse->setNews($allNews['news']);
-        $newsResponse->setNe(count($allNews['news']));
+        $newsResponse->setCount(count($allNews['news']));
         return $newsResponse;
     }
 }
