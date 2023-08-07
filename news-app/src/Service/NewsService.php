@@ -34,14 +34,6 @@ class NewsService
         return $this->prepareResponsePayload($allNews);
     }
 
-    public function prepareResponsePayload($allNews): NewsResponse
-    {
-        $newsResponse = new NewsResponse();
-        $newsResponse->setNews($allNews['news']);
-        $newsResponse->setCount(count($allNews['news']));
-        return $newsResponse;
-    }
-
     public function save(BookmarkRequest $bookmarkRequest): ?News
     {
         $news = $this->newsRepository->findOneBy([

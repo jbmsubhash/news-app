@@ -3,6 +3,7 @@ namespace App\Service;
 
 use App\Entity\News;
 use App\Entity\UserBookmark;
+use App\Generator\NewsResponseGenerator;
 use App\Model\BookmarkListRequest;
 use App\Model\BookmarkRequest;
 use App\Model\NewsResponse;
@@ -20,7 +21,8 @@ class BookmarkService
         private readonly ValidatorInterface $validator,
         private readonly UserBookmarkRepository $userBookmarkRepository,
         private readonly UserRepository $userRepository,
-        private readonly NewsService $newsService,
+        private readonly NewsResponseGenerator $newsResponseGenerator,
+        private readonly UserService $userService,
         protected EntityManagerInterface $entityManager,
         private readonly LoggerInterface $logger)
     {
@@ -61,17 +63,12 @@ class BookmarkService
         return $bookmarkListRequest;
     }
 
-
+    /**
+     * @throws Exception
+     */
     public function save(BookmarkRequest $bookmarkRequest, News $news): ?UserBookmark
     {
-        $user = $this->userRepository->findOneBy([
-            'id' => $bookmarkRequest->getUserId(),
-        ]);
-
-        if(!$user) {
-            $this->logger->error("User does not exist in the database");
-            return null;
-        }
+        $user = $this->userService->getUser($bookmarkRequest->getUserId());
 
         $userBookmark = $this->userBookmarkRepository->findOneBy([
             'user' => $user,
@@ -82,23 +79,18 @@ class BookmarkService
             $userBookmark = new UserBookmark();
             $userBookmark->setNews($news);
             $userBookmark->setUser($user);
-
             $this->entityManager->persist($userBookmark);
             $this->entityManager->flush();
         }
         return $userBookmark;
     }
 
+    /**
+     * @throws Exception
+     */
     public function list(BookmarkListRequest $bookmarkListRequest): ?NewsResponse
     {
-        $user = $this->userRepository->findOneBy([
-            'id' => $bookmarkListRequest->getUserId(),
-        ]);
-
-        if(!$user) {
-            $this->logger->error("User does not exist in the database");
-            return null;
-        }
+        $user = $this->userService->getUser($bookmarkListRequest->getUserId());
 
         $userBookmarks = $this->userBookmarkRepository->findBy([
             'user' => $user,
@@ -106,6 +98,7 @@ class BookmarkService
         if(!$userBookmarks){
             return null;
         }
+
         $allNews = [];
         $news = [];
         foreach ($userBookmarks as $userBookmark){
@@ -115,6 +108,6 @@ class BookmarkService
             $news['webUrl'] = $userBookmark->getNews()->getWebUrl();
             $allNews['news'][] = $news;
         }
-        return $this->newsService->prepareResponsePayload($allNews);
+        return $this->newsResponseGenerator->prepareNewsResponse($allNews);
     }
 }
