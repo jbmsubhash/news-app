@@ -71,3 +71,36 @@ if you have a solid reason for them.
   touches are *entirely* optional. Some developers prefer to leave the
   design to designers, some get a kick out of making things *just so*.
   We like both kinds.
+
+----------------------------------------
+
+## **Installation**
+1. Clone the repo master branch
+2. Make sure you have an up to date Docker running on your local machine.
+3. `docker-compose build` will build up the container and allocate the resources.
+4. `docker-compose up` with make the endpoints available
+5. ssh the container and run doctorin commands to make sure the DB is created and up to date
+   `php bin/console doctrine:database:create`
+   `php bin/console doctrine:migrations:migrate`
+6. Then use http://localhost:8000/register to create a user
+7. Then login on http://localhost:8000/login
+Above 6 and 7 are not assesntial steps as the endpoints are not restricted by login credentials at the moment.
+
+## **Sample endpoints as below**
+
+1. Listing News from Guardian
+````
+curl --location 'http://localhost:8000/api/news'
+````
+2. Adding a bookmark
+````
+curl --location --request POST 'http://localhost:8000/api/bookmarks?userId=1&newsId=business%2F2023%2Faug%2F01%2Feurostars-gwendoline-cazenave-seamless-border-crossing-isnt-science&webPublicationDate=2023-08-01T13%3A00%3A03Z&webTitle=Eurostar%E2%80%99s%20Gwendoline%20Cazenave%3A%20%E2%80%98Seamless%20border%20crossing%20isn%E2%80%99t%20science%20fiction%E2%80%99&webUrl=https%3A%2F%2Fwww.theguardian.com%2Fbusiness%2F2023%2Faug%2F01%2Feurostars-gwendoline-cazenave-seamless-border-crossing-isnt-science-fiction'
+````
+3. Listing Bookmarks for specific user
+````
+curl --location 'http://localhost:8000/api/bookmarks?userId=1'
+````
+
+## **Running tests**
+1 If you are interested, please feel free to run tests in the console with 
+```php bin/phpunit```
