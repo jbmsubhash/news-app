@@ -2,9 +2,9 @@
 namespace App\Service;
 
 use App\Entity\News;
-use App\Generator\NewsResponseGenerator;
+use App\Generator\ResponseGenerator;
 use App\Model\BookmarkRequest;
-use App\Model\NewsResponse;
+use App\Model\NewsGroupsResponse;
 use App\Repository\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
@@ -18,12 +18,12 @@ class NewsService
         iterable $newsProviders,
         private readonly NewsRepository $newsRepository,
         protected EntityManagerInterface $entityManager,
-        private readonly NewsResponseGenerator $newsResponseGenerator
+        private readonly ResponseGenerator $newsResponseGenerator
     ) {
         $this->newsProviders = $newsProviders;
     }
 
-    public function fetchAllNews(?string $search): array
+    public function fetchAllNews(?string $search): NewsGroupsResponse
     {
         $groupedNewsArray = [];
         foreach ($this->newsProviders as $newsProvider) {
@@ -32,7 +32,7 @@ class NewsService
                 $groupedNewsArray['newsGroups'][] = $news;
             }
         }
-        return $groupedNewsArray;
+        return $this->newsResponseGenerator->prepareNewsGroupsResponse($groupedNewsArray);
     }
 
     /**

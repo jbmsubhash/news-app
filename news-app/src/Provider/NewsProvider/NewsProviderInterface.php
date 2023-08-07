@@ -1,7 +1,7 @@
 <?php
 namespace App\Provider\NewsProvider;
 
-use App\Model\NewsResponse;
+use App\Model\BookmarkResponse;
 
 interface NewsProviderInterface
 {

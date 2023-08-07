@@ -3,10 +3,10 @@ namespace App\Service;
 
 use App\Entity\News;
 use App\Entity\UserBookmark;
-use App\Generator\NewsResponseGenerator;
+use App\Generator\ResponseGenerator;
 use App\Model\BookmarkListRequest;
 use App\Model\BookmarkRequest;
-use App\Model\NewsResponse;
+use App\Model\BookmarkResponse;
 use App\Repository\UserBookmarkRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ class BookmarkService
         private readonly ValidatorInterface $validator,
         private readonly UserBookmarkRepository $userBookmarkRepository,
         private readonly UserRepository $userRepository,
-        private readonly NewsResponseGenerator $newsResponseGenerator,
+        private readonly ResponseGenerator $responseGenerator,
         private readonly UserService $userService,
         protected EntityManagerInterface $entityManager,
         private readonly LoggerInterface $logger)
@@ -88,7 +88,7 @@ class BookmarkService
     /**
      * @throws Exception
      */
-    public function list(BookmarkListRequest $bookmarkListRequest): ?NewsResponse
+    public function list(BookmarkListRequest $bookmarkListRequest): ?BookmarkResponse
     {
         $user = $this->userService->getUser($bookmarkListRequest->getUserId());
 
@@ -108,6 +108,6 @@ class BookmarkService
             $news['webUrl'] = $userBookmark->getNews()->getWebUrl();
             $allNews['news'][] = $news;
         }
-        return $this->newsResponseGenerator->prepareNewsResponse($allNews);
+        return $this->responseGenerator->prepareBookmarkResponse($allNews);
     }
 }
