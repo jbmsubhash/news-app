@@ -23,7 +23,7 @@ class BookmarkController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/bookmarks', name: 'add_bookmark', methods: ['POST'])]
+    #[Route('/api/bookmarks', name: 'add_bookmark', methods: ['POST'])]
     public function bookmark(Request $request): Response
     {
         $bookmarkRequest = $this->bookmarkService->validateRequest($request);
@@ -42,7 +42,7 @@ class BookmarkController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/bookmarks', name: 'list_bookmark', methods: ['GET'])]
+    #[Route('/api/bookmarks', name: 'list_bookmark', methods: ['GET'])]
     public function listBookmarks(Request $request): Response
     {
         $bookmarkRequest = $this->bookmarkService->validateListRequest($request);

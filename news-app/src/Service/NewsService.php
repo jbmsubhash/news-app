@@ -2,11 +2,13 @@
 namespace App\Service;
 
 use App\Entity\News;
+use App\Generator\NewsResponseGenerator;
 use App\Model\BookmarkRequest;
 use App\Model\NewsResponse;
 use App\Repository\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
+use Exception;
 
 class NewsService
 {
@@ -15,7 +17,8 @@ class NewsService
     public function __construct(
         iterable $newsProviders,
         private readonly NewsRepository $newsRepository,
-        protected EntityManagerInterface $entityManager
+        protected EntityManagerInterface $entityManager,
+        private readonly NewsResponseGenerator $newsResponseGenerator
     ) {
         $this->newsProviders = $newsProviders;
     }
@@ -31,9 +34,12 @@ class NewsService
             }
         }
 
-        return $this->prepareResponsePayload($allNews);
+        return $this->newsResponseGenerator->prepareNewsResponse($allNews);
     }
 
+    /**
+     * @throws Exception
+     */
     public function save(BookmarkRequest $bookmarkRequest): ?News
     {
         $news = $this->newsRepository->findOneBy([
