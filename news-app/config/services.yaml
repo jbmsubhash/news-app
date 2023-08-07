@@ -29,6 +29,6 @@ services:
             - '%env(GUARDIAN_BASE_URL)%'
             - '%env(GUARDIAN_API_KEY)%'
 
-    App\Manager\NewsManager:
+    App\Service\NewsService:
         arguments:
             - !tagged news_provider
